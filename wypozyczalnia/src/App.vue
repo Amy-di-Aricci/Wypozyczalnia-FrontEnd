@@ -1,11 +1,6 @@
 <template>
   <v-app>
-  <Navigation/>
-    <v-content>
-      <v-container fluid>
-        <router-view></router-view>
-      </v-container>
-    </v-content>
+  <LoginPage/>
   </v-app>
 </template>
 
@@ -14,15 +9,17 @@ import HelloWorld from './components/HelloWorld'
 import LeftNavBar from "@/components/LeftNavBar";
 import TopToolbar from "@/components/TopToolbar";
 import Navigation from "@/components/Navigation";
+import LoginPage from "@/views/LoginPage";
 
 export default {
   name: 'App',
   components: {
-    Navigation
+    Navigation,
+    LoginPage
   },
   data () {
     return {
-      drawer: true
+      isLoggedIn: false,
     }
   }
 }
