@@ -8,6 +8,8 @@
                     clipped-left
                     id="top-toolbar">
                 <v-toolbar-title>System wypożyczeń</v-toolbar-title>
+                <v-spacer/>
+                <v-btn icon><v-icon>fas fa-user</v-icon></v-btn>
             </v-toolbar>
         <div>
             <v-card flat width="500">

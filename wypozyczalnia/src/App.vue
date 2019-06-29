@@ -1,6 +1,7 @@
 <template>
   <v-app>
-  <LoginPage/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"/>
+    <LoginPage/>
   </v-app>
 </template>
 
