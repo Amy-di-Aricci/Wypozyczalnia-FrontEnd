@@ -54,7 +54,7 @@
                         this.isLoggedIn=true;
                         this.error=false;
                         console.log("Zalogowano");
-                        this.$router.push('/');
+                        this.$router.replace('/');
                     }} catch (e) {
                     this.error = true;
                     console.log("Nie zalogowano");
