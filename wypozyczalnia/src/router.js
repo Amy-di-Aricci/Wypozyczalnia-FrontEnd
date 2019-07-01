@@ -4,6 +4,7 @@ import RentalPage from "./views/RentalPage.vue"
 import RegisterPage from "@/views/RegisterPage";
 import ItemListPage from "@/views/ItemListPage";
 import ItemDetailPage from "@/views/ItemDetailPage"
+import ItemEditPage from "@/views/ItemEditPage";
 
 export default new Router({
     mode: 'history',
@@ -47,6 +48,12 @@ export default new Router({
                     component: ItemDetailPage,
                 },
                 {
+                    path: "/item/:id/edit",
+                    name: "itemEditPage",
+                    component: ItemEditPage,
+                    meta: {admin:true}
+                },
+                {
                     path: "/reservations"
                 },
                 {
@@ -68,5 +75,9 @@ else {
     Router.guest=true;
 }
 
+if (JSON.parse(localStorage.getItem('user').role === "ADMIN"))
+{
+    Router.admin=true;
+}
 
 

@@ -5,9 +5,18 @@
                 {{item.name}}
             </v-toolbar-title>
             <v-spacer/>
-            <v-btn v-if="hasAdminRights">Edytuj</v-btn>
+            <v-btn icon v-if="hasAdminRights" @click="$router.replace('/item/'+item.itemId+'/edit')" color="info" fab><v-icon>edit</v-icon></v-btn>
         </v-toolbar>
-        
+        <p>
+            {{item.description}}
+        </p>
+        <br/>
+        <p v-if="item.signature!==''" class="title">
+            Identyfikator: {{item.signature}}
+        </p>
+        <v-divider/>
+        <v-btn v-if="item.isAvailable" outline color="info">Wypożycz</v-btn>
+        <v-btn v-if="!item.isAvailable" outline disabled>Niedostępny</v-btn>
     </v-container>
 </template>
 
@@ -56,5 +65,7 @@
 </script>
 
 <style scoped>
-
+p{
+    margin : 20px;
+}
 </style>
