@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import './plugins/vuetify'
 import App from './App.vue'
+import axios from 'axios';
 
 Vue.config.productionTip = false
 
@@ -10,7 +11,6 @@ import Router from 'vue-router';
 import router from '@/router';
 
 Vue.config.productionTip = false
-
 axios.defaults.proxy = {
   host: 'http://localhost',
   port: 5000,
@@ -23,7 +23,6 @@ const token = localStorage.getItem('accessToken')
 if (token) {
   axios.defaults.headers.common['Authorization'] = 'Bearer'+token
 }
-
 
 new Vue({
   el: '#app',
