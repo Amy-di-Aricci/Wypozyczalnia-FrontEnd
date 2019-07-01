@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid fill-height>
+    <v-container id="login" fluid fill-height>
         <v-layout align-center justify-center>
             <v-toolbar
                     dark
@@ -9,7 +9,7 @@
                     id="top-toolbar">
                 <v-toolbar-title>System wypożyczeń</v-toolbar-title>
                 <v-spacer/>
-                <v-btn icon><v-icon>fas fa-user</v-icon></v-btn>
+                <GuestUserMenu/>
             </v-toolbar>
         <div>
             <v-card flat width="500">
@@ -32,8 +32,10 @@
 
 <script>
     import axios from 'axios';
+    import GuestUserMenu from "@/components/GuestUserMenu";
     export default {
         name: "LoginPage",
+        components: {GuestUserMenu},
         data(){
             return{
                     input:{
@@ -50,8 +52,11 @@
                 try{this.response = await axios.post('http://localhost:5000/login', {'Username':this.input.username, 'Password':this.input.password});
                     if(this.response.status === 200){
                         localStorage.setItem('accessToken', this.response.data.token);
+                        localStorage.setItem('user', JSON.stringify(this.response.data));
                         this.isLoggedIn=true;
+                        this.error=false;
                         console.log("Zalogowano");
+                        this.$router.replace('/');
                     }} catch (e) {
                     this.error = true;
                     console.log("Nie zalogowano");

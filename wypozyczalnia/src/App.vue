@@ -1,27 +1,34 @@
 <template>
-  <v-app>
+  <v-app id="app">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"/>
-    <LoginPage/>
+    <router-view/>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
-import LeftNavBar from "@/components/LeftNavBar";
-import TopToolbar from "@/components/TopToolbar";
-import Navigation from "@/components/Navigation";
-import LoginPage from "@/views/LoginPage";
-
 export default {
   name: 'App',
   components: {
-    Navigation,
-    LoginPage
   },
-  data () {
+  data() {
     return {
-      isLoggedIn: false,
+      drawer: true,
     }
+  },
+  methods:{
+    redirect(){
+      if (!localStorage.getItem('accessToken')) {
+        this.$router.replace({path: "/login"});
+      }
+      else if (localStorage.getItem('accessToken')) {
+        this.$router.replace('/');
+      }
+    }
+  },
+  mounted(){
+    this.redirect();
   }
 }
+
+
 </script>

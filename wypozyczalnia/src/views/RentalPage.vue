@@ -1,10 +1,18 @@
 <template>
-    
+    <v-app>
+        <Navigation/>
+        <v-content>
+            <router-view/>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
+    import Navigation from "@/components/Navigation";
+
     export default {
-        name: "RentalPage"
+        name: "RentalPage",
+        components: {Navigation}
     }
 </script>
 
