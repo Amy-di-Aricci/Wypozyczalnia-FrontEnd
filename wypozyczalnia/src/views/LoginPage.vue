@@ -9,7 +9,7 @@
                     id="top-toolbar">
                 <v-toolbar-title>System wypożyczeń</v-toolbar-title>
                 <v-spacer/>
-                <v-btn icon><v-icon>fas fa-user</v-icon></v-btn>
+                <GuestUserMenu/>
             </v-toolbar>
         <div>
             <v-card flat width="500">
@@ -32,8 +32,10 @@
 
 <script>
     import axios from 'axios';
+    import GuestUserMenu from "@/components/GuestUserMenu";
     export default {
         name: "LoginPage",
+        components: {GuestUserMenu},
         data(){
             return{
                     input:{
