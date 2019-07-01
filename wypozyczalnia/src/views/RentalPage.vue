@@ -2,8 +2,7 @@
     <v-app>
         <Navigation/>
         <v-content>
-            <v-container fluid>
-            </v-container>
+            <router-view/>
         </v-content>
     </v-app>
 </template>

@@ -6,7 +6,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'App',
   components: {
@@ -15,15 +14,22 @@ export default {
   data() {
     return {
       drawer: true,
-      isLoggedIn: false,
     }
   },
+  methods:{
+    redirect(){
+      if (!localStorage.getItem('accessToken')) {
+        this.$router.replace({path: "/login"});
+      }
+      else if (localStorage.getItem('accessToken')) {
+        this.$router.replace('/');
+      }
+    }
+  },
+  mounted(){
+    this.redirect();
+  }
 }
 
-if (!this.isLoggedIn) {
-  this.$router.replace({name: "loginPage"});
-}
-else if (this.isLoggedIn) {
-  this.$router.replace({name: "rentalPage"});
-}
+
 </script>

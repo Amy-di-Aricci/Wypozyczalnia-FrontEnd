@@ -19,7 +19,7 @@ axios.defaults.proxy = {
 Vue.use(VueRouter);
 Vue.use(Router);
 
-const token = localStorage.getItem('user-token')
+const token = localStorage.getItem('accessToken')
 if (token) {
   axios.defaults.headers.common['Authorization'] = token
 }
