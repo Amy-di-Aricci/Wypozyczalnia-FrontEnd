@@ -49,11 +49,11 @@
         data() {
             return {
                 items: [
-                    {title: 'Katalog przedmiotów', icon: 'fas fa-list', route:'/items', role:'USER'},
+                    {title: 'Katalog przedmiotów', icon: 'fas fa-list', route:'/', role:'USER'},
                     {title: 'Moje rezerwacje', icon: 'far fa-star', route:'/reservations', role:'USER'},
                     {title: 'Moje wypożyczenia', icon: 'fas fa-star', route:'/borrowings', role:'USER'},
 
-                    {title: 'Zarządzaj katalogiem', icon: 'fas fa-list', route:'/items', role:'ADMIN'},
+                    {title: 'Zarządzaj katalogiem', icon: 'fas fa-list', route:'/', role:'ADMIN'},
                     {title: 'Zarządzaj rezerwacjami', icon: 'far fa-star', route:'/reservations', role:'ADMIN'},
                     {title: 'Zarządzaj wypożyczeniami', icon: 'fas fa-star', route:'/borrowings', role:'ADMIN'},
 

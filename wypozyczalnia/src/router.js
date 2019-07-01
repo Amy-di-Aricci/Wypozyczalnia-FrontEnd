@@ -3,6 +3,7 @@ import LoginPage from "./views/LoginPage.vue"
 import RentalPage from "./views/RentalPage.vue"
 import RegisterPage from "@/views/RegisterPage";
 import ItemListPage from "@/views/ItemListPage";
+import ItemDetailPage from "@/views/ItemDetailPage"
 
 export default new Router({
     mode: 'history',
@@ -36,13 +37,14 @@ export default new Router({
             },
             children:[
                 {
-                    path: "",
-                    name: "homePage"
-                },
-                {
-                    path: "/items",
+                    path: "/",
                     name: "itemListPage",
                     component: ItemListPage,
+                },
+                {
+                    path: "/item/:id",
+                    name: "itemDetailPage",
+                    component: ItemDetailPage,
                 },
                 {
                     path: "/reservations"
