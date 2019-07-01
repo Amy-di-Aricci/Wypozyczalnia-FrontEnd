@@ -61,11 +61,16 @@
                 ],
                 right: null,
                 drawer: true,
-                role: user.role,
+                role: '',
+                user: null,
             }
         },
+        mounted(){
+            this.user = JSON.parse(localStorage.getItem('user'));
+            this.role = this.user.role;
+        }
     }
-    const user = JSON.parse(localStorage.getItem('user'));
+
 </script>
 
 

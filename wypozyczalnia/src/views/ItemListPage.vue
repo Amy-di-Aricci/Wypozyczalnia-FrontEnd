@@ -67,9 +67,6 @@
                     console.log(e)
                 }
             },
-            goToDetails(){
-
-            }
         },
         mounted(){
             this.getItems();

@@ -1,6 +1,13 @@
 <template>
-    <v-container>
-        <div class="display-1">{{id}}</div>
+    <v-container v-if="readyToRender">
+        <v-toolbar class="transparent" flat>
+            <v-toolbar-title class="display-1">
+                {{item.name}}
+            </v-toolbar-title>
+            <v-spacer/>
+            <v-btn v-if="hasAdminRights">Edytuj</v-btn>
+        </v-toolbar>
+        
     </v-container>
 </template>
 
@@ -14,6 +21,7 @@
                 item: {itemId: null, name: '', description: '', signature: null, isAvailable: null},
                 response: "",
                 readyToRender: false,
+                hasAdminRights: false,
             }
         },
         methods: {
@@ -24,7 +32,7 @@
                     this.response = await axios.get('http://localhost:5000/items/'+this.id);
                     if(this.response.status === 200){
                         this.item = this.response.data;
-                        localStorage.setItem('data', this.item);
+                        //localStorage.setItem('data', this.item);
                         console.log('Pobrano item');
                         this.readyToRender = true
                     }
@@ -38,6 +46,11 @@
         },
         mounted(){
             this.getItem();
+            const user = JSON.parse(localStorage.getItem('user'));
+            if(user.role === "ADMIN"){
+                this.hasAdminRights=true;
+                console.log("jestem adminem")
+            }
         }
     }
 </script>
