@@ -8,31 +8,33 @@
         </v-toolbar>
         <v-form>
             <v-text-field label="Nazwa" v-model="item.name" required/>
-            <v-textarea label="Opis" v-model="item.description" required/>
+            <v-textarea auto-grow label="Opis" v-model="item.description"/>
             <v-text-field label="Identyfikator (opcjonalnie)" v-model="item.signature"/>
-            <v-select label="Dostępny" :items="item.isAvailable" item-text="['Tak', 'Nie']" value="[true, false]"></v-select>
         </v-form>
-            {{item.description}}
-        <br/>
-        <p v-if="item.signature!==''" class="title">
-            Identyfikator: {{item.signature}}
-        </p>
         <v-divider/>
-        <v-btn v-if="item.isAvailable" outline color="info">Wypożycz</v-btn>
-        <v-btn v-if="!item.isAvailable" outline disabled>Niedostępny</v-btn>
+        <div v-if="error" class="error--text subheading">Błąd. Spróbuj ponownie.</div>
+        <v-btn @click="updateItem" outline color="success">Zapisz</v-btn>
+        <v-btn @click="$router.go(-1)" outline color="error">Anuluj</v-btn>
+        <v-btn @click="deleteItem" outline color="error">Usuń</v-btn>
     </v-container>
 </template>
 
 <script>
+    import axios from 'axios';
+    import DeleteButton from "@/components/DeleteButton";
     export default {
         name: "ItemEditPage",
+        components: {DeleteButton},
         data(){
             return{
                 id: 0,
+                //availabilityOptions:[{itemName: 'Tak', itemValue: true}, {itemName: 'Nie', itemValue: false}],
                 item: {itemId: null, name: '', description: '', signature: null, isAvailable: null},
                 response: "",
                 readyToRender: false,
                 hasAdminRights: false,
+                saved: false,
+                error: false,
             }
         },
         methods: {
@@ -43,7 +45,7 @@
                     this.response = await axios.get('http://localhost:5000/items/'+this.id);
                     if(this.response.status === 200){
                         this.item = this.response.data;
-                        //localStorage.setItem('data', this.item);
+                        localStorage.setItem('data', JSON.stringify(this.item));
                         console.log('Pobrano item');
                         this.readyToRender = true
                     }
@@ -52,6 +54,32 @@
                 catch (e) {
                     console.log('Blad pobierania itemu');
                     console.log(e)
+                }
+            },
+            async deleteItem(){
+                try{
+                    //this.readyToRender=false;
+                    this.response = await axios.delete('http://localhost:5000/items/'+ this.id);
+                    this.$router.replace('/');
+                    //this.readyToRender=true;
+                }
+                catch (e) {
+                    console.log('Blad usuwania');
+                }
+            },
+            async updateItem(){
+                try{
+                    this.response = await axios.put('http://localhost:5000/items/'+this.id, {"Name":this.item.name, "Signature":this.item.signature, "Description":this.item.description});
+                    if(this.response.status === 200)
+                    {
+                        console.log('Zapisano item');
+                        localStorage.removeItem('data');
+                        this.saved = true;
+                        this.$router.replace('/items/'+this.item.itemId);
+                    }
+                }
+                catch (e) {
+                    this.error=true;
                 }
             }
         },
@@ -62,7 +90,20 @@
                 this.hasAdminRights=true;
                 console.log("jestem adminem")
             }
-        }
+        },
+        beforeRouteLeave (to, from, next) {
+            if(JSON.stringify(this.item) !== localStorage.getItem('data') && !this.saved){
+                const answer = window.confirm('Czy na pewno chcesz opuścić stronę? Utracisz niezapisane zmiany.')
+                if (answer) {
+                    next()
+                } else {
+                    next(false)
+                }
+            }
+            else{
+                next()
+            }
+        },
     }
 </script>
 

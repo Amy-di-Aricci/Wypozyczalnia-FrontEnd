@@ -5,6 +5,8 @@ import RegisterPage from "@/views/RegisterPage";
 import ItemListPage from "@/views/ItemListPage";
 import ItemDetailPage from "@/views/ItemDetailPage"
 import ItemEditPage from "@/views/ItemEditPage";
+import ItemAddPage from "@/views/ItemAddPage";
+
 
 export default new Router({
     mode: 'history',
@@ -41,6 +43,12 @@ export default new Router({
                     path: "/",
                     name: "itemListPage",
                     component: ItemListPage,
+                },
+                {
+                  path: "/item/add",
+                    name: "itemAddPage",
+                    component: ItemAddPage,
+                    meta: {admin:true},
                 },
                 {
                     path: "/item/:id",
@@ -81,3 +89,11 @@ else {
     Router.guest=true;
 }
 
+function beforeLeave (to, from, next) {
+    const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+    if (answer) {
+        next()
+    } else {
+        next(false)
+    }
+}

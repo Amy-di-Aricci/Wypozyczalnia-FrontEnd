@@ -15,13 +15,13 @@ axios.defaults.proxy = {
   port: 5000,
 };
 
-Vue.use(VueRouter);
-Vue.use(Router);
-
 const token = localStorage.getItem('accessToken')
 if (token) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer'+token;
+  axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
 }
+
+Vue.use(VueRouter);
+Vue.use(Router);
 
 new Vue({
   el: '#app',
