@@ -60,6 +60,7 @@
                     }} catch (e) {
                     this.error = true;
                     console.log("Nie zalogowano");
+                    console.log(e);
                 }
             }
         }

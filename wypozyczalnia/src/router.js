@@ -66,18 +66,18 @@ export default new Router({
         }
     ],
 })
-if (localStorage.getItem('accessToken')){
+
+const user = JSON.parse(localStorage.getItem('user'));
+if (user){
     Router.authenticated=true;
     Router.guest=false;
+    if(user.role === "ADMIN")
+    {
+        Router.admin = true;
+    }
 }
 else {
     Router.authenticated=false;
     Router.guest=true;
 }
-
-if (JSON.parse(localStorage.getItem('user').role === "ADMIN"))
-{
-    Router.admin=true;
-}
-
 

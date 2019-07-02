@@ -20,7 +20,7 @@ Vue.use(Router);
 
 const token = localStorage.getItem('accessToken')
 if (token) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer'+token
+  axios.defaults.headers.common['Authorization'] = 'Bearer'+token;
 }
 
 new Vue({
