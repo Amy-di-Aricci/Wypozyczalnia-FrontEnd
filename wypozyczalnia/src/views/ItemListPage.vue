@@ -34,7 +34,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-btn outline color="info" @click="$router.push('/item/'+item.itemId)">Szczegóły</v-btn>
-                    <v-btn v-if="item.isAvailable" outline color="info">Wypożycz</v-btn>
+                    <v-btn v-if="item.isAvailable" @click="reserveItem(item.itemId)" outline color="info">Zarezerwuj</v-btn>
                     <v-btn v-if="!item.isAvailable" outline disabled>Niedostępny</v-btn>
                     <v-spacer/>
                     <v-btn v-if="hasAdminRights" @click="$router.push('/item/'+item.itemId+'/edit')" outline color="info">Modyfikuj</v-btn>
@@ -90,7 +90,17 @@
                     console.log('Blad usuwania');
                     this.getItems();
                 }
-            }
+            },
+            async reserveItem(itemId){
+                try{
+                    const userId = JSON.parse(localStorage.getItem('user')).userId;
+                    this.response = await axios.post('http://localhost:5000/reservations', {"ItemId" : itemId, "userId": userId});
+
+                }
+                catch (e) {
+
+                }
+            },
         },
         mounted(){
             this.getItems();

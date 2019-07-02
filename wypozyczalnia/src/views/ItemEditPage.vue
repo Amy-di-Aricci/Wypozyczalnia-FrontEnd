@@ -13,9 +13,12 @@
         </v-form>
         <v-divider/>
         <div v-if="error" class="error--text subheading">Błąd. Spróbuj ponownie.</div>
-        <v-btn @click="updateItem" outline color="success">Zapisz</v-btn>
-        <v-btn @click="$router.go(-1)" outline color="error">Anuluj</v-btn>
-        <v-btn @click="deleteItem" outline color="error">Usuń</v-btn>
+        <v-toolbar class="transparent" flat>
+            <v-btn @click="updateItem" outline color="success">Zapisz</v-btn>
+            <v-btn @click="$router.go(-1)" outline color="error">Anuluj</v-btn>
+            <v-spacer/>
+            <v-btn @click="deleteItem" outline color="error">Usuń</v-btn>
+        </v-toolbar>
     </v-container>
 </template>
 
