@@ -12,13 +12,18 @@
             <v-text-field label="Identyfikator (opcjonalnie)" v-model="item.signature"/>
         </v-form>
         <v-divider/>
+        <br/>
         <div v-if="error" class="error--text subheading">Błąd. Spróbuj ponownie.</div>
-        <v-toolbar class="transparent" flat>
-            <v-btn @click="updateItem" outline color="success">Zapisz</v-btn>
-            <v-btn @click="$router.go(-1)" outline color="error">Anuluj</v-btn>
+        <v-layout row-wrap>
+            <div align="left">
+                <v-btn class="margin5" @click="updateItem" outline color="success">Zapisz</v-btn>
+                <v-btn class="margin5" @click="$router.go(-1)" outline color="error">Anuluj</v-btn>
+            </div>
             <v-spacer/>
-            <v-btn @click="deleteItem" outline color="error">Usuń</v-btn>
-        </v-toolbar>
+            <div align="right">
+                <v-btn class="margin5" @click="deleteItem" outline color="error">Usuń</v-btn>
+            </div>
+        </v-layout>
     </v-container>
 </template>
 
@@ -113,5 +118,7 @@
 </script>
 
 <style scoped>
-
+    .margin5{
+        margin: 5px !important;
+    }
 </style>

@@ -6,7 +6,7 @@
         <br/>
         <br/>
         <v-layout align-center justify-center>
-            <v-img max-width="500" src="https://http.cat/404"></v-img>
+            <v-img max-width="800" src="https://http.cat/404"></v-img>
         </v-layout>
     </v-container>
 

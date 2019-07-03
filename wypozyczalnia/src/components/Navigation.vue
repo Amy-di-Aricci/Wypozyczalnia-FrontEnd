@@ -21,7 +21,7 @@
     >
         <v-divider></v-divider>
 
-        <v-list dense class="pt-0">
+        <v-list class="pt-0">
             <v-list-tile
                     v-for="item in items"
                     :key="item.title"
@@ -29,7 +29,7 @@
                     @click="$router.replace(item.route)"
             >
                 <v-list-tile-action>
-                    <v-icon>{{ item.icon }}</v-icon>
+                    <v-icon small>{{ item.icon }}</v-icon>
                 </v-list-tile-action>
 
                 <v-list-tile-content>
@@ -49,14 +49,13 @@
         data() {
             return {
                 items: [
-                    {title: 'Katalog przedmiotów', icon: 'fas fa-list', route:'/', role:'USER'},
-                    {title: 'Moje rezerwacje', icon: 'far fa-star', route:'/reservations', role:'USER'},
-                    {title: 'Moje wypożyczenia', icon: 'fas fa-star', route:'/borrowings', role:'USER'},
-
                     {title: 'Zarządzaj katalogiem', icon: 'fas fa-list', route:'/', role:'ADMIN'},
                     {title: 'Zarządzaj rezerwacjami', icon: 'far fa-star', route:'/reservations/all', role:'ADMIN'},
                     {title: 'Zarządzaj wypożyczeniami', icon: 'fas fa-star', route:'/borrowings/all', role:'ADMIN'},
 
+                    {title: 'Katalog przedmiotów', icon: 'fas fa-list', route:'/', role:'USER'},
+                    {title: 'Moje rezerwacje', icon: 'far fa-star', route:'/reservations', role:''},
+                    {title: 'Moje wypożyczenia', icon: 'fas fa-star', route:'/borrowings', role:''},
                     {title: 'Mój profil', icon: 'far fa-user', route:'/profile', role:''},
                 ],
                 right: null,
