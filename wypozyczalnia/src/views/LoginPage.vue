@@ -55,12 +55,9 @@
                         localStorage.setItem('user', JSON.stringify(this.response.data));
                         this.isLoggedIn=true;
                         this.error=false;
-                        console.log("Zalogowano");
                         this.$router.replace('/');
                     }} catch (e) {
                     this.error = true;
-                    console.log("Nie zalogowano");
-                    console.log(e);
                 }
             }
         }

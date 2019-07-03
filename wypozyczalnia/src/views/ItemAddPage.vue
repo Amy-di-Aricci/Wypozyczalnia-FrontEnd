@@ -39,7 +39,6 @@
                     this.response = await axios.post('/items/', {"Name":this.item.name, "Signature":this.item.signature, "Description":this.item.description});
                     if(this.response.status === 200)
                     {
-                        console.log('Zapisano item');
                         localStorage.removeItem('data');
                         this.saved = true;
                         this.$router.replace('/');

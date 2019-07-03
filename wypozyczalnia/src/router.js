@@ -91,10 +91,22 @@ export default new Router({
                     meta: {authenticated:true}
                 },
                 {
+                    path: "/reservations/user/:id",
+                    name: "manageUserReservationsPage",
+                    component: UserReservationsPage,
+                    meta: {admin:true}
+                },
+                {
                     path: "/borrowings",
                     name: "userBorrowingsPage",
                     component: UserBorrowingsPage,
                     meta: {authenticated:true}
+                },
+                {
+                    path: "/borrowings/user/:id",
+                    name: "manageUserBorrowingsPage",
+                    component: UserBorrowingsPage,
+                    meta: {admin:true}
                 },
                 {
                     path: "/borrowings/all",

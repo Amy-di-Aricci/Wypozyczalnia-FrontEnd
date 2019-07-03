@@ -16,6 +16,8 @@
                     <v-layout row-wrap>
                         <v-btn outline color="info" class="margin5" @click="$router.push('/item/'+reservation.item.itemId)">Szczegóły</v-btn>
                         <v-spacer/>
+                        <v-btn outline v-if="hasAdminRights&&reservation.item.isAvailable" color="success" class="margin5" @click="confirmReservation(reservation)">Wypożycz</v-btn>
+                        <v-btn outline v-if="hasAdminRights&&!reservation.item.isAvailable" disabled class="margin5">Niedostępny</v-btn>
                         <v-btn outline color="error" class="margin5" @click="deleteReservation(reservation.reservationId)">Usuń</v-btn>
                     </v-layout>
                 </v-card-actions>
@@ -36,6 +38,7 @@
                 item: {index: 0, itemId: null, name: '', description: '', signature: null, isAvailable: null},
                 response: "",
                 userId: 0,
+                hasAdminRights: false,
                 readyToRender: false,
             }
         },
@@ -63,13 +66,27 @@
                         //this.readyToRender=true;
                     }
                     catch (e) {
-                        console.log('Blad usuwania');
                         this.getItems();
                     }
+            },
+            async confirmReservation(reservation) {
+                try {
+                    //this.readyToRender=false;
+                    this.response = await axios.post('/hires', {
+                        "ItemId": reservation.item.itemId,
+                        "UserId": this.userId
+                    });
+                    this.getItems();
+                    //this.readyToRender=true;
+                } catch (e) {
+                    this.getItems();
+                }
             }
         },
         mounted(){
             this.getItems();
+            const role = JSON.parse(localStorage.getItem('user')).role;
+            if(role === 'ADMIN') this.hasAdminRights = true;
         }
     }
 </script>

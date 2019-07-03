@@ -41,16 +41,10 @@
                     this.response = await axios.get('/items/'+this.id);
                     if(this.response.status === 200){
                         this.item = this.response.data;
-                        //localStorage.setItem('data', this.item);
-                        console.log('Pobrano item');
                         this.readyToRender = true
                     }
-                    console.log(this.response.status)
                 }
-                catch (e) {
-                    console.log('Blad pobierania itemu');
-                    console.log(e)
-                }
+                catch (e){}
             }
         },
         mounted(){
@@ -58,7 +52,6 @@
             const user = JSON.parse(localStorage.getItem('user'));
             if(user.role === "ADMIN"){
                 this.hasAdminRights=true;
-                console.log("jestem adminem")
             }
         }
     }

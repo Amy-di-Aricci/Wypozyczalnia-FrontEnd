@@ -16,6 +16,7 @@
                     <v-layout row-wrap>
                         <v-btn outline color="info" class="margin5" @click="$router.push('/item/'+hire.item.itemId)">Szczegóły</v-btn>
                         <v-spacer/>
+                        <v-btn outline color="success" class="margin5" @click="endBorrowing(hire.hireId)">Oddaj</v-btn>
                     </v-layout>
                 </v-card-actions>
             </v-card>
@@ -46,6 +47,15 @@
                     this.borrowings = this.response.data;
                     localStorage.setItem('data', JSON.stringify(this.borrowings));
                     this.readyToRender = true;
+                }
+                catch (e) {
+
+                }
+            },
+            async endBorrowing(Id){
+                try{
+                    this.response = await axios.get('/hires/' + Id +'/return');
+                    this.getItems();
                 }
                 catch (e) {
 

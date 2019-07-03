@@ -64,7 +64,7 @@
                 userId: 0,
                 items: [this.item],
                 reservations: [{reservationId:0, reservationDateTime: "", item: this.item}],
-                item: {index: 0, itemId: null, name: '', description: '', signature: null, isAvailable: null},
+                item: {index: 0, itemId: null, name: "", description: "", signature: null, isAvailable: null},
             }
         },
         methods:{
@@ -74,13 +74,11 @@
                     if(this.response.status === 200){
                         this.items = this.response.data;
                         localStorage.setItem('data', JSON.stringify(this.items));
-                        console.log('Pobrano itemy');
                         this.readyToRender = true
                     }
                     console.log(this.response.status)
                 }
                 catch (e) {
-                    console.log('Blad pobierania itemow');
                     console.log(e)
                 }
             },
@@ -94,7 +92,6 @@
                     //this.readyToRender=true;
                 }
                 catch (e) {
-                    console.log('Blad usuwania');
                     this.getItems();
                 }
             },
@@ -127,9 +124,9 @@
             },
             reserved(itemId){
                 let reserved = function(element){
+                    if((element.item.itemId !== null) && (itemId!==null))
                     return (element.item.itemId === itemId);
                 };
-                console.log(this.reservations.some(reserved));
                 return this.reservations.some(reserved);
             }
         },
