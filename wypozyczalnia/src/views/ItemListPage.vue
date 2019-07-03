@@ -31,11 +31,19 @@
                 <v-divider/>
                 <v-card-text class="text-truncate">
                     {{item.description}}
+                    <br/>
+                    <br/>
+                    <v-divider/>
+                    <br/>
+                    <div class="subheading">Dostępność:
+                        <v-icon fab small v-if="item.isAvailable" color="success">fas fa-check</v-icon>
+                        <v-icon fab small v-if="!item.isAvailable" color="error">fas fa-times</v-icon>
+                    </div>
+
                 </v-card-text>
                 <v-card-actions>
                     <v-btn outline color="info" @click="$router.push('/item/'+item.itemId)">Szczegóły</v-btn>
-                    <v-btn v-if="item.isAvailable" @click="reserveItem(item.itemId)" outline color="info">Zarezerwuj</v-btn>
-                    <v-btn v-if="!item.isAvailable" outline disabled>Niedostępny</v-btn>
+                    <v-btn @click="reserveItem(item.itemId)" outline color="info">Zarezerwuj</v-btn>
                     <v-spacer/>
                     <v-btn v-if="hasAdminRights" @click="$router.push('/item/'+item.itemId+'/edit')" outline color="info">Modyfikuj</v-btn>
                     <v-btn v-if="hasAdminRights" @click="deleteItem(item.itemId)" outline color="error">Usuń</v-btn>

@@ -14,7 +14,7 @@
         methods:{
             async deleteItem(){
                 try{
-                    this.response = axios.delete('http://localhost:5000/items/'+this.Id);
+                    this.response = await axios.delete('http://localhost:5000/items/'+this.Id);
                     this.$router.replace('/');
                 }
                 catch (e) {
