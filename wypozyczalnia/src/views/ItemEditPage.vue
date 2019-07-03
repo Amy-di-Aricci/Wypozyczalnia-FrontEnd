@@ -50,7 +50,7 @@
             {
                 this.id = this.$route.params.id;
                 try{
-                    this.response = await axios.get('http://localhost:5000/items/'+this.id);
+                    this.response = await axios.get('/items/'+this.id);
                     if(this.response.status === 200){
                         this.item = this.response.data;
                         localStorage.setItem('data', JSON.stringify(this.item));
@@ -69,7 +69,7 @@
                 if (answer)
                 try{
                     //this.readyToRender=false;
-                    this.response = await axios.delete('http://localhost:5000/items/'+ this.id);
+                    this.response = await axios.delete('/items/'+ this.id);
                     this.$router.replace('/');
                     //this.readyToRender=true;
                 }
@@ -79,7 +79,7 @@
             },
             async updateItem(){
                 try{
-                    this.response = await axios.put('http://localhost:5000/items/'+this.id, {"Name":this.item.name, "Signature":this.item.signature, "Description":this.item.description});
+                    this.response = await axios.put('/items/'+this.id, {"Name":this.item.name, "Signature":this.item.signature, "Description":this.item.description});
                     if(this.response.status === 200)
                     {
                         console.log('Zapisano item');

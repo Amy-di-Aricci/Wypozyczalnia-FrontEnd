@@ -38,7 +38,7 @@
             {
                 this.id = this.$route.params.id;
                 try{
-                    this.response = await axios.get('http://localhost:5000/items/'+this.id);
+                    this.response = await axios.get('/items/'+this.id);
                     if(this.response.status === 200){
                         this.item = this.response.data;
                         //localStorage.setItem('data', this.item);

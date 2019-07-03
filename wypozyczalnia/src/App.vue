@@ -14,6 +14,7 @@ export default {
   data() {
     return {
       drawer: true,
+      //mainPath: 'http://localhost:5000'
     }
   },
   methods:{

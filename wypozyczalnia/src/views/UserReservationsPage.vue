@@ -41,9 +41,10 @@
         },
         methods:{
             async getItems(){
-                this.userId = JSON.parse(localStorage.getItem('user')).userId;
+                if(this.$route.params.id) this.userId= this.$route.params.id;
+                else this.userId = JSON.parse(localStorage.getItem('user')).userId;
                 try{
-                    this.response= await axios.get('http://localhost:5000/reservations/users/'+this.userId);
+                    this.response= await axios.get('reservations/users/'+this.userId);
                     this.reservations = this.response.data;
                     localStorage.setItem('data', JSON.stringify(this.reservations));
                     this.readyToRender = true;
@@ -57,7 +58,7 @@
                 if (answer)
                     try{
                         //this.readyToRender=false;
-                        this.response = await axios.delete('http://localhost:5000/reservations/'+ Id);
+                        this.response = await axios.delete('/reservations/'+ Id);
                         this.getItems();
                         //this.readyToRender=true;
                     }

@@ -70,7 +70,7 @@
         methods:{
             async getItems(){
                 try{
-                    this.response = await axios.get('http://localhost:5000/items');
+                    this.response = await axios.get('/items');
                     if(this.response.status === 200){
                         this.items = this.response.data;
                         localStorage.setItem('data', JSON.stringify(this.items));
@@ -89,7 +89,7 @@
                 if (answer)
                 try{
                     //this.readyToRender=false;
-                    this.response = await axios.delete('http://localhost:5000/items/'+ Id);
+                    this.response = await axios.delete('/items/'+ Id);
                     this.getItems();
                     //this.readyToRender=true;
                 }
@@ -101,7 +101,7 @@
             async getUserReservations(){
                 this.userId = JSON.parse(localStorage.getItem('user')).userId;
                 try{
-                    this.response= await axios.get('http://localhost:5000/reservations/users/'+this.userId);
+                    this.response= await axios.get('/reservations/users/'+this.userId);
                     this.reservations = this.response.data;
                     localStorage.setItem('reservations', JSON.stringify(this.reservations));
                     this.readyToRender = true;
@@ -113,9 +113,9 @@
             async reserveItem(itemId){
                 try{
                     const userId = JSON.parse(localStorage.getItem('user')).userId;
-                    this.response = await axios.post('http://localhost:5000/reservations', {"ItemId" : itemId, "userId": userId});
+                    this.response = await axios.post('/reservations', {"ItemId" : itemId, "userId": userId});
                     if(this.response.status===200){
-                        this.$router.push('/reservations/');
+                        this.$router.push('/reservations');
                     }
                     else{
                         window.alert("Błąd. Nie można dokonać rezerwacji");
@@ -128,7 +128,7 @@
             reserved(itemId){
                 let reserved = function(element){
                     return (element.item.itemId === itemId);
-                }
+                };
                 console.log(this.reservations.some(reserved));
                 return this.reservations.some(reserved);
             }

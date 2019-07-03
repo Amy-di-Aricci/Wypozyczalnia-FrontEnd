@@ -8,7 +8,7 @@
                 <v-card-title class="title">{{hire.item.name}}</v-card-title>
                 <v-divider/>
                 <v-card-text>
-                    <div class="subheading">Data rezerwacji: </div>
+                    <div class="subheading">Data wypożyczenia: </div>
                     {{hire.hireDateTime | moment('DD-MM-YYYY')}}
                 </v-card-text>
                 <v-divider/>
@@ -39,9 +39,10 @@
         },
         methods:{
             async getItems(){
-                this.userId = JSON.parse(localStorage.getItem('user')).userId;
+                if(this.$route.params.id) this.userId= this.$route.params.id;
+                else this.userId = JSON.parse(localStorage.getItem('user')).userId;
                 try{
-                    this.response= await axios.get('http://localhost:5000/hires/users/'+this.userId);
+                    this.response= await axios.get('/hires/users/'+this.userId);
                     this.borrowings = this.response.data;
                     localStorage.setItem('data', JSON.stringify(this.borrowings));
                     this.readyToRender = true;
