@@ -1,7 +1,8 @@
 <template>
     <v-container fluid fill>
         <v-toolbar flat class="transparent">
-            <v-toolbar-title class="display-1">Moje rezerwacje</v-toolbar-title>
+            <v-toolbar-title v-if="user !== null" class="display-1">Rezerwacje użytkownika {{user.firstName}} {{user.lastName}}</v-toolbar-title>
+            <v-toolbar-title v-if="user === null" class="display-1">Moje rezerwacje</v-toolbar-title>
         </v-toolbar>
         <template v-if="readyToRender" v-model="reservations" v-for="(reservation, index) in reservations">
             <v-card :key="index">
@@ -38,19 +39,34 @@
                 item: {index: 0, itemId: null, name: '', description: '', signature: null, isAvailable: null},
                 response: "",
                 userId: 0,
+                user: null,
                 hasAdminRights: false,
                 readyToRender: false,
             }
         },
         methods:{
             async getItems(){
-                if(this.$route.params.id) this.userId= this.$route.params.id;
-                else this.userId = JSON.parse(localStorage.getItem('user')).userId;
+                if(this.$route.params.id) {
+                    this.userId= this.$route.params.id;
+                    this.getUser();
+                }
+                else {
+                    this.userId = JSON.parse(localStorage.getItem('user')).userId;
+                }
                 try{
                     this.response= await axios.get('reservations/users/'+this.userId);
                     this.reservations = this.response.data;
                     localStorage.setItem('data', JSON.stringify(this.reservations));
                     this.readyToRender = true;
+                }
+                catch (e) {
+
+                }
+            },
+            async getUser(){
+                try{
+                    this.response = await axios.get('/users/'+this.userId);
+                    this.user = this.response.data;
                 }
                 catch (e) {
 

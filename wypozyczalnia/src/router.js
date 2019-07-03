@@ -12,6 +12,7 @@ import ManageReservationsPage from "@/views/ManageReservationsPage";
 import NotFoundPage from "@/views/NotFoundPage";
 import UserBorrowingsPage from "@/views/UserBorrowingsPage";
 import ManageBorrowingsPage from "@/views/ManageBorrowingsPage";
+import ManageUsersPage from "@/views/ManageUsersPage";
 
 
 export default new Router({
@@ -113,6 +114,12 @@ export default new Router({
                     name: "manageBorrowingsPage",
                     component: ManageBorrowingsPage,
                     meta: {admin:true},
+                },
+                {
+                    path: "/users/all",
+                    name: "manageUsersPage",
+                    component: ManageUsersPage,
+                    meta: {admin: true},
                 },
                 {
                     path: "/profile"

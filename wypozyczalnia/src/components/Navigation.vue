@@ -52,6 +52,7 @@
                     {title: 'Zarządzaj katalogiem', icon: 'fas fa-list', route:'/', role:'ADMIN'},
                     {title: 'Zarządzaj rezerwacjami', icon: 'far fa-star', route:'/reservations/all', role:'ADMIN'},
                     {title: 'Zarządzaj wypożyczeniami', icon: 'fas fa-star', route:'/borrowings/all', role:'ADMIN'},
+                    {title: 'Zarządzaj użytkownikami', icon: 'fas fa-user', route:'/users/all', role:'ADMIN'},
 
                     {title: 'Katalog przedmiotów', icon: 'fas fa-list', route:'/', role:'USER'},
                     {title: 'Moje rezerwacje', icon: 'far fa-star', route:'/reservations', role:''},

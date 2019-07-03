@@ -1,7 +1,8 @@
 <template>
     <v-container fluid fill>
         <v-toolbar flat class="transparent">
-            <v-toolbar-title class="display-1">Moje wypożyczenia</v-toolbar-title>
+            <v-toolbar-title v-if="user !== null" class="display-1">Wypożyczenia użytkownika {{user.firstName}} {{user.lastName}}</v-toolbar-title>
+            <v-toolbar-title v-if="user === null" class="display-1">Moje wypożyczenia</v-toolbar-title>
         </v-toolbar>
         <template v-if="readyToRender" v-model="borrowings" v-for="(hire, index) in borrowings">
             <v-card v-if="hire.returnDateTime===null" :key="index">
@@ -35,13 +36,19 @@
                 item: {index: 0, itemId: null, name: '', description: '', signature: null, isAvailable: null},
                 response: "",
                 userId: 0,
+                user: null,
                 readyToRender: false,
             }
         },
         methods:{
             async getItems(){
-                if(this.$route.params.id) this.userId= this.$route.params.id;
-                else this.userId = JSON.parse(localStorage.getItem('user')).userId;
+                if(this.$route.params.id) {
+                    this.userId= this.$route.params.id;
+                    this.getUser();
+                }
+                else {
+                    this.userId = JSON.parse(localStorage.getItem('user')).userId;
+                }
                 try{
                     this.response= await axios.get('/hires/users/'+this.userId);
                     this.borrowings = this.response.data;
@@ -50,6 +57,15 @@
                 }
                 catch (e) {
 
+                }
+            },
+            async getUser(){
+                try{
+                    this.response = await axios.get('/users/'+this.userId);
+                    this.user = this.response.data;
+                }
+                catch (e) {
+                    
                 }
             },
             async endBorrowing(Id){
