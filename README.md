@@ -3,4 +3,4 @@
 
 `npm run serve`
 
-wywołane w katalogu 'wypozyczalnia'
+wywołane w katalogu `wypozyczalnia`
