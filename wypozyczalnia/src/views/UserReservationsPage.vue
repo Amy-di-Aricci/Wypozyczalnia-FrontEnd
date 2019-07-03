@@ -46,7 +46,7 @@
         },
         methods:{
             async getItems(){
-                if(this.$route.params.id !== null) {
+                if(this.$route.params.id != null) {
                     this.userId= this.$route.params.id;
                     this.getUser();
                 }

@@ -21,10 +21,10 @@ export default {
     redirect(){
       if (!localStorage.getItem('accessToken')) {
         this.$router.replace({path: "/login"});
-      }
+      }/*
       else if (localStorage.getItem('accessToken')) {
         this.$router.replace('/');
-      }
+      }*/
     }
   },
   mounted(){

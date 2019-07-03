@@ -42,7 +42,8 @@
         },
         methods:{
             async getItems(){
-                if(this.$route.params.id) {
+                if(this.$route.params.Id != null) {
+                    console.log(this.$route.params.Id);
                     this.userId= this.$route.params.id;
                     this.getUser();
                 }
