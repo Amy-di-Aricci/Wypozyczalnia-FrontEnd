@@ -54,8 +54,8 @@
                     {title: 'Moje wypożyczenia', icon: 'fas fa-star', route:'/borrowings', role:'USER'},
 
                     {title: 'Zarządzaj katalogiem', icon: 'fas fa-list', route:'/', role:'ADMIN'},
-                    {title: 'Zarządzaj rezerwacjami', icon: 'far fa-star', route:'/reservations', role:'ADMIN'},
-                    {title: 'Zarządzaj wypożyczeniami', icon: 'fas fa-star', route:'/borrowings', role:'ADMIN'},
+                    {title: 'Zarządzaj rezerwacjami', icon: 'far fa-star', route:'/reservations/all', role:'ADMIN'},
+                    {title: 'Zarządzaj wypożyczeniami', icon: 'fas fa-star', route:'/borrowings/all', role:'ADMIN'},
 
                     {title: 'Mój profil', icon: 'far fa-user', route:'/profile', role:''},
                 ],

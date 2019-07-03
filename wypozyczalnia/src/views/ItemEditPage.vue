@@ -60,6 +60,8 @@
                 }
             },
             async deleteItem(){
+                const answer = window.confirm('Czy na pewno chcesz usunąć tę pozycję?');
+                if (answer)
                 try{
                     //this.readyToRender=false;
                     this.response = await axios.delete('http://localhost:5000/items/'+ this.id);

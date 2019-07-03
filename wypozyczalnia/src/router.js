@@ -6,6 +6,10 @@ import ItemListPage from "@/views/ItemListPage";
 import ItemDetailPage from "@/views/ItemDetailPage"
 import ItemEditPage from "@/views/ItemEditPage";
 import ItemAddPage from "@/views/ItemAddPage";
+import ItemReservationsPage from "@/views/ItemReservationsPage";
+import UserReservationsPage from "@/views/UserReservationsPage";
+import ManageReservationsPage from "@/views/ManageReservationsPage";
+import NotFoundPage from "@/views/NotFoundPage";
 
 
 export default new Router({
@@ -13,7 +17,7 @@ export default new Router({
     routes: [
         {
             path: '*',
-            redirect: '/login',
+            redirect: '/404'
         },
         {
             path: "/login",
@@ -40,6 +44,11 @@ export default new Router({
             },
             children:[
                 {
+                    path: '/404',
+                    name: 'notFoundPage',
+                    component: NotFoundPage,
+                },
+                {
                     path: "/",
                     name: "itemListPage",
                     component: ItemListPage,
@@ -62,7 +71,22 @@ export default new Router({
                     meta: {admin:true}
                 },
                 {
-                    path: "/reservations"
+                    path: "/reservations/all",
+                    name: "manageReservationsPage",
+                    component: ManageReservationsPage,
+                    meta: {admin:true},
+                },
+                {
+                    path: "/manage/item/:id",
+                    name: "manageItemReservationsPage",
+                    component: ItemReservationsPage,
+                    meta: {admin:true},
+                },
+                {
+                    path: "/reservations",
+                    name: "userReservationsPage",
+                    component: UserReservationsPage,
+                    meta: {authenticated:true}
                 },
                 {
                     path: "/borrowings"
@@ -87,13 +111,4 @@ if (user){
 else {
     Router.authenticated=false;
     Router.guest=true;
-}
-
-function beforeLeave (to, from, next) {
-    const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
-    if (answer) {
-        next()
-    } else {
-        next(false)
-    }
 }

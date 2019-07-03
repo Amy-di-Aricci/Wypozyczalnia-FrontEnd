@@ -43,7 +43,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-btn outline color="info" @click="$router.push('/item/'+item.itemId)">Szczegóły</v-btn>
-                    <v-btn @click="reserveItem(item.itemId)" outline color="info">Zarezerwuj</v-btn>
+                    <v-btn @click="reserveItem(item.itemId)" outline color="success">Zarezerwuj</v-btn>
+                    <v-btn v-if="hasAdminRights" @click="$router.push('/manage/item/'+item.itemId)" outline color="info">Zarządzaj</v-btn>
                     <v-spacer/>
                     <v-btn v-if="hasAdminRights" @click="$router.push('/item/'+item.itemId+'/edit')" outline color="info">Modyfikuj</v-btn>
                     <v-btn v-if="hasAdminRights" @click="deleteItem(item.itemId)" outline color="error">Usuń</v-btn>
@@ -88,6 +89,8 @@
                 }
             },
             async deleteItem(Id){
+                const answer = window.confirm('Czy na pewno chcesz usunąć tę pozycję?');
+                if (answer)
                 try{
                     //this.readyToRender=false;
                     this.response = await axios.delete('http://localhost:5000/items/'+ Id);
@@ -103,7 +106,9 @@
                 try{
                     const userId = JSON.parse(localStorage.getItem('user')).userId;
                     this.response = await axios.post('http://localhost:5000/reservations', {"ItemId" : itemId, "userId": userId});
-
+                    if(this.response.status===200){
+                        this.$router.push('/reservations/');
+                    }
                 }
                 catch (e) {
 
