@@ -46,7 +46,7 @@
         },
         methods:{
             async getItems(){
-                if(this.$route.params.id) {
+                if(this.$route.params.id !== null) {
                     this.userId= this.$route.params.id;
                     this.getUser();
                 }
@@ -54,7 +54,7 @@
                     this.userId = JSON.parse(localStorage.getItem('user')).userId;
                 }
                 try{
-                    this.response= await axios.get('reservations/users/'+this.userId);
+                    this.response= await axios.get('/reservations/users/'+this.userId);
                     this.reservations = this.response.data;
                     localStorage.setItem('data', JSON.stringify(this.reservations));
                     this.readyToRender = true;
