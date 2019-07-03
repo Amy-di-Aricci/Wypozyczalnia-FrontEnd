@@ -20,7 +20,7 @@ export default {
   methods:{
     redirect(){
       if (!localStorage.getItem('accessToken')) {
-        this.$router.replace({path: "/login"});
+        this.$router.replace('/login');
       }/*
       else if (localStorage.getItem('accessToken')) {
         this.$router.replace('/');
@@ -29,7 +29,8 @@ export default {
   },
   mounted(){
     this.redirect();
-  }
+  },
+
 }
 
 
