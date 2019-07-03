@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import './plugins/vuetify'
 import App from './App.vue'
+import VueMoment from 'vue-moment'
 
 Vue.config.productionTip = false
 
@@ -15,13 +16,15 @@ axios.defaults.proxy = {
   port: 5000,
 };
 
+const token = localStorage.getItem('accessToken');
+if (token) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
+}
+
 Vue.use(VueRouter);
 Vue.use(Router);
-
-const token = localStorage.getItem('accessToken')
-if (token) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer'+token
-}
+Vue.use(VueMoment, 'vue-moment');
+Vue.use(axios);
 
 new Vue({
   el: '#app',

@@ -49,17 +49,15 @@
         },
         methods: {
             async login(){
-                try{this.response = await axios.post('http://localhost:5000/login', {'Username':this.input.username, 'Password':this.input.password});
+                try{this.response = await axios.post('/login', {"username":this.input.username, "password":this.input.password});
                     if(this.response.status === 200){
                         localStorage.setItem('accessToken', this.response.data.token);
                         localStorage.setItem('user', JSON.stringify(this.response.data));
                         this.isLoggedIn=true;
                         this.error=false;
-                        console.log("Zalogowano");
                         this.$router.replace('/');
                     }} catch (e) {
                     this.error = true;
-                    console.log("Nie zalogowano");
                 }
             }
         }
