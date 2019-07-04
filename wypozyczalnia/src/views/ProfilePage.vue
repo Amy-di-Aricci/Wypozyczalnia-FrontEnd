@@ -55,7 +55,7 @@
             <v-spacer v-if="hasAdminRights"/>
             <v-btn v-if="ownProfile" @click="dialogPassword = true" outline color="warning">Zmień hasło</v-btn>
         </v-toolbar>
-        <v-dialog v-model="dialogNames" max-width="500" style="align-content: center">
+        <v-dialog persistent v-model="dialogNames" max-width="500" style="align-content: center">
             <v-card style="max-width: 500px;">
                 <v-card-text>
                     <v-form ref="nameForm" v-model="nameForm">
@@ -69,8 +69,19 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog>
-
+        <v-dialog v-model="dialogPassword" max-width="500" style="align-content: center">
+            <v-card style="max-width: 500px;">
+                <v-card-text>
+                    <v-form ref="passwordForm" v-model="passwordForm">
+                        <v-text-field type="password" :rules="[rules.required, rules.min]" v-model="password" label="Hasło" required></v-text-field>
+                        <v-text-field type="password" :rules="[rules.required, rules.min, rules.matching]" v-model="passwordConfirm" label="Powtórz hasło" required></v-text-field>
+                    </v-form>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="success" outline @click="changePassword">Zapisz</v-btn>
+                    <v-btn color="error" outline @click="cancel">Anuluj</v-btn>
+                </v-card-actions>
+            </v-card>
         </v-dialog>
         <v-dialog>
 
@@ -87,6 +98,7 @@
                 rules: {
                     required: value => !!value || 'Pole wymagane.',
                     min: v => v.length >= 5 || 'Co najmniej 5 znaków',
+                    matching: value => value === this.password || 'Hasła muszą się zgadzać',
                 },
                 firstName: "",
                 lastName: "",
@@ -108,6 +120,8 @@
                 roleChoice: "",
                 roles: ['ADMIN', 'USER'],
                 response: "",
+                password: "",
+                passwordConfirm: "",
             }
         },
         methods: {
@@ -137,6 +151,10 @@
             },
             async changePassword(){
 
+            },
+            cancel(){
+                this.dialogPassword=false;
+                this.$refs.passwordForm.reset();
             },
             async changeNames(){
                 this.$refs.nameForm.validate();
