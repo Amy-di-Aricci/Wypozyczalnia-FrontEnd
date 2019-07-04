@@ -6,7 +6,6 @@
 </template>
 
 <script>
-  import axios from 'axios';
 export default {
   name: 'App',
   components: {
@@ -14,12 +13,12 @@ export default {
   data() {
     return {
       drawer: true,
-      //mainPath: 'http://localhost:5000'
     }
   },
   methods:{
     redirect(){
       if (!localStorage.getItem('accessToken')) {
+        localStorage.clear();
         this.$router.replace('/login');
       }/*
       else if (localStorage.getItem('accessToken')) {
