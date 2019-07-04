@@ -3,7 +3,8 @@ import './plugins/vuetify'
 import App from './App.vue'
 import VueMoment from 'vue-moment'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+Vue.config.devtools = true;
 
 import axios, {AxiosInstance as instance} from 'axios';
 import VueRouter from "vue-router";

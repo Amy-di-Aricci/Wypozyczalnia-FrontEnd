@@ -62,7 +62,13 @@
                 right: null,
                 drawer: true,
                 role: '',
-                user: null,
+                user: {
+                    userId: 0,
+                    firstName: "",
+                    lastName: "",
+                    username: "",
+                    role: ""
+                },
             }
         },
         mounted(){

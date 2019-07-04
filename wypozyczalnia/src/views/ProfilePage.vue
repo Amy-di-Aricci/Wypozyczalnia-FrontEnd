@@ -11,9 +11,70 @@
                 Dane osobowe
             </v-toolbar-title>
             <v-spacer/>
-            <v-btn icon @click="" color="info" fab small><v-icon>edit</v-icon></v-btn>
+            <v-btn icon @click="dialogNames=true" color="info" fab small><v-icon>edit</v-icon></v-btn>
         </v-toolbar>
+            <v-list style="margin: 10px">
+                <v-list-tile>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            <span class="title">Imię: </span> <span class="title font-weight-light">{{user.firstName}}</span>
+                        </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            <span class="title">Nazwisko: </span> <span class="title font-weight-light">{{user.lastName}}</span>
+                        </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+            <div v-if="hasAdminRights">
+                <v-divider/>
+                <v-list style="margin: 10px">
+                    <v-list-tile>
+                        <v-list-tile-content>
+                            <v-list-tile-title>
+                                <span class="title">Rola: </span> <span class="title font-weight-light">{{user.role}}</span>
+                            </v-list-tile-title>
 
+                        </v-list-tile-content>
+                        <v-list-tile-action>
+                            <v-btn icon @click="dialogRole=true" color="info" fab small><v-icon>edit</v-icon></v-btn>
+                        </v-list-tile-action>
+                    </v-list-tile>
+                </v-list>
+            </div>
+        <v-divider/>
+        <br/>
+        <v-toolbar flat class="transparent">
+            <div v-if="hasAdminRights">
+                <v-btn outline color="info" @click="$router.push('/reservations/user/'+user.userId)">Rezerwacje</v-btn>
+                <v-btn outline color="info" @click="$router.push('/borrowings/user/'+user.userId)">Wypożyczenia</v-btn>
+            </div>
+            <v-spacer v-if="hasAdminRights"/>
+            <v-btn v-if="ownProfile" @click="dialogPassword = true" outline color="warning">Zmień hasło</v-btn>
+        </v-toolbar>
+        <v-dialog v-model="dialogNames" max-width="500" style="align-content: center">
+            <v-card style="max-width: 500px;">
+                <v-card-text>
+                    <v-form ref="nameForm" v-model="nameForm">
+                        <v-text-field :rules="[rules.required]" v-model="firstName" label="Imię" required></v-text-field>
+                        <v-text-field :rules="[rules.required]" v-model="lastName" label="Nazwisko" required></v-text-field>
+                    </v-form>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="success" outline @click="changeNames">Zapisz</v-btn>
+                    <v-btn color="error" outline @click="dialogNames=false">Anuluj</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog>
+
+        </v-dialog>
+        <v-dialog>
+
+        </v-dialog>
     </v-container>
 </template>
 
@@ -23,31 +84,83 @@
         name: "ProfilePage",
         data(){
             return{
+                rules: {
+                    required: value => !!value || 'Pole wymagane.',
+                    min: v => v.length >= 5 || 'Co najmniej 5 znaków',
+                },
+                firstName: "",
+                lastName: "",
                 userId: 0,
                 ownProfile: false,
-                user: null,
+                user: {
+                    userId: 0,
+                    firstName: "",
+                    lastName: "",
+                    username: "",
+                    role: ""
+                },
                 hasAdminRights: false,
+                dialogNames: false,
+                dialogRole: false,
+                dialogPassword: false,
+                nameForm: false,
+                passwordForm: false,
+                roleChoice: "",
+                roles: ['ADMIN', 'USER'],
+                response: "",
             }
         },
         methods: {
             async getUser(){
                 if(this.$route.params.id != null) {
                     this.userId = this.$route.params.id;
-                    try{
-                        this.response = await axios.get('/users/'+this.userId);
-                        this.user = this.response.data;
-                        this.ownProfile = false;
-                    }
-                    catch (e) {
-
-                    }
+                    this.ownProfile = false;
                 }
                 else
                 {
-                    this.user = JSON.parse(localStorage.getItem('user'));
                     this.ownProfile = true;
+                    this.userId = JSON.parse(localStorage.getItem('user')).userId;
+                }
+                try {
+                    this.response = await axios.get('/users/'+this.userId);
+                    this.user = this.response.data;
+                    if(this.response.status === 200 && this.ownProfile){
+                        localStorage.setItem('user', JSON.stringify(this.user));
+                    }
+                }
+                catch (e) {
+
+                }
+                this.firstName = this.user.firstName;
+                this.lastName = this.user.lastName;
+                this.roleChoice = this.user.role;
+            },
+            async changePassword(){
+
+            },
+            async changeNames(){
+                this.$refs.nameForm.validate();
+                console.log(this.lastName +' '+ this.user.lastName);
+                console.log(this.firstName +' '+ this.user.firstName);
+                if((this.firstName !== this.user.firstName) || (this.lastName !== this.user.lastName))
+                {
+                    if(this.nameForm){
+                        try{
+                            this.response = await axios.put('/users/'+this.user.userId, {"FirstName":this.firstName, "LastName":this.lastName});
+                            if(this.response.status === 200){
+                                this.getUser();
+                                this.dialogNames = false;
+                            }
+                        }
+                        catch (e) {
+
+                        }
+                    }
                 }
             },
+            async changeRole(){
+
+            }
         },
         mounted(){
             this.getUser();
