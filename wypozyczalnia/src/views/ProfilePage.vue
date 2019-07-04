@@ -69,13 +69,14 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="dialogPassword" max-width="500" style="align-content: center">
+        <v-dialog persistent v-model="dialogPassword" max-width="500" style="align-content: center">
             <v-card style="max-width: 500px;">
                 <v-card-text>
                     <v-form ref="passwordForm" v-model="passwordForm">
                         <v-text-field type="password" :rules="[rules.required, rules.min]" v-model="password" label="Hasło" required></v-text-field>
-                        <v-text-field type="password" :rules="[rules.required, rules.min, rules.matching]" v-model="passwordConfirm" label="Powtórz hasło" required></v-text-field>
+                        <v-text-field type="password" :rules="[rules.matching, rules.required, rules.min]" v-model="passwordConfirm" label="Powtórz hasło" required></v-text-field>
                     </v-form>
+                    <div class="caption font-weight-light error--text" v-if="passErr">Błąd. Nie udało się zmienić hasła.</div>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn color="success" outline @click="changePassword">Zapisz</v-btn>
@@ -83,8 +84,33 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog>
-
+        <v-dialog v-model="passResponse" max-width="400" style="align-content: center">
+            <v-card style="max-width: 400px">
+                <v-card-title>
+                    <v-icon color="success" style="margin: 10px">fas fa-check</v-icon>
+                    <span class="title green--text">Hasło zmienione pomyślnie.</span>
+                </v-card-title>
+                <v-card-actions>
+                    <v-spacer/>
+                    <v-btn outline color="success" @click="passResponse=false">OK</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogRole" max-width="500" style="align-content: center">
+            <v-card style="max-width: 500px;">
+                <v-card-title class="title">Wybierz rolę</v-card-title>
+                <v-card-text>
+                    <v-select
+                    :items = roles
+                    v-model = roleChoice>
+                    </v-select>
+                    <div v-if="roleErr" class="caption font-weight-light error--text">Błąd. Nie można zmienić roli</div>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="success" outline @click="changeRole">Zapisz</v-btn>
+                    <v-btn color="error" outline @click="dialogRole=false">Anuluj</v-btn>
+                </v-card-actions>
+            </v-card>
         </v-dialog>
     </v-container>
 </template>
@@ -122,6 +148,9 @@
                 response: "",
                 password: "",
                 passwordConfirm: "",
+                passResponse: false,
+                passErr: false,
+                roleErr: false,
             }
         },
         methods: {
@@ -150,7 +179,18 @@
                 this.roleChoice = this.user.role;
             },
             async changePassword(){
-
+                this.$refs.passwordForm.validate();
+                if(this.passwordForm){
+                    try{
+                        this.response = await axios.put('/users/change/password', {"Password":this.password, "RepeatedPassword":this.passwordConfirm});
+                        if(this.response.status === 200)
+                            this.passResponse = true;
+                    }
+                    catch (e) {
+                        this.passErr = true;
+                    }
+                    this.dialogPassword = false;
+                }
             },
             cancel(){
                 this.dialogPassword=false;
@@ -158,8 +198,6 @@
             },
             async changeNames(){
                 this.$refs.nameForm.validate();
-                console.log(this.lastName +' '+ this.user.lastName);
-                console.log(this.firstName +' '+ this.user.firstName);
                 if((this.firstName !== this.user.firstName) || (this.lastName !== this.user.lastName))
                 {
                     if(this.nameForm){
@@ -177,7 +215,19 @@
                 }
             },
             async changeRole(){
-
+                try{
+                    this.response = await axios.put('/users/'+this.user.userId+'/change/role', {"role":this.roleChoice});
+                    if(this.response.status === 200){
+                        this.getUser();
+                        this.dialogRole = false;
+                    }
+                    else{
+                        this.roleErr = true;
+                    }
+                }
+                catch (e) {
+                    this.roleErr = true;
+                }
             }
         },
         mounted(){
