@@ -6,6 +6,7 @@
 </template>
 
 <script>
+  import axios from 'axios';
 export default {
   name: 'App',
   components: {
@@ -19,6 +20,7 @@ export default {
     redirect(){
       if (!localStorage.getItem('accessToken')) {
         localStorage.clear();
+        delete axios.defaults.headers.common["Authorization"];
         this.$router.replace('/login');
       }/*
       else if (localStorage.getItem('accessToken')) {

@@ -15,13 +15,14 @@
                 <v-card flat width="500">
                     <v-card-title class="display-1">Zarejestruj się</v-card-title>
                     <v-card-text>
-                        <v-form>
+                        <v-form ref="form" v-model="validForm">
+                            <p class="caption error--text" v-if="repeated">Użytkownik o takim loginie już istnieje</p>
                             <v-text-field :rules="[rules.required, rules.min]" v-model="input.username" label="Login" reguired></v-text-field>
                             <v-text-field :rules="[rules.required, rules.min]" type="password" v-model="input.password" label="Hasło" required></v-text-field>
                             <v-text-field :rules="[rules.required]" v-model="input.firstName" label="Imię" required></v-text-field>
                             <v-text-field :rules="[rules.required]" v-model="input.lastName" label="Nazwisko" required></v-text-field>
                         </v-form>
-                        <div v-if="error" class="error--text subheading"></div>
+                        <div v-if="error" class="error--text subheading">Błąd rejestracji. Spróbuj ponownie.</div>
                     </v-card-text>
                     <v-card-actions>
                         <div>
@@ -56,10 +57,14 @@
                 response: "",
                 error: false,
                 message: "",
+                repeated: false,
+                validForm: false,
             }
         },
         methods:{
             async register(){
+                this.$refs.form.validate();
+                if(this.validForm)
                 try{this.response = await axios.post('/users', {"Username":this.input.username, "Password":this.input.password, "FirstName":this.input.firstName, "LastName":this.input.lastName});
                     if(this.response.status === 200){
                         await this.login();
@@ -67,12 +72,16 @@
                         this.$router.replace('/');
                     }
                     else if(this.response.status === 400){
+                        if(this.response.data.Username ==="User already exists")
+                            this.repeated = true;
                     }
                 }
                 catch (e) {
-                    this.error=true;
-                    this.message = this.response.data;
-                    console.log(this.message);
+                    console.log(e.response.data);
+                    if(e.response.data.Username[0] === "User already exists")
+                        this.repeated = true;
+                    else this.error=true;
+                    console.log('powtorka');
                 }
             },
             async login(){

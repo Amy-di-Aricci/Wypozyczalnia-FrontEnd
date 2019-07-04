@@ -41,6 +41,7 @@
 </template>
 
 <script>
+    import axios from 'axios';
     export default {
         props: ["name"],
         name: "AuthenticatedUserMenu",
@@ -49,6 +50,7 @@
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('user');
                 localStorage.clear();
+                delete axios.defaults.headers.common["Authorization"];
                 this.$router.replace('/login');
             }
         }

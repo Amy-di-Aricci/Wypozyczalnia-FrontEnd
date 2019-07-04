@@ -14,6 +14,7 @@ import UserBorrowingsPage from "@/views/UserBorrowingsPage";
 import ManageBorrowingsPage from "@/views/ManageBorrowingsPage";
 import ManageUsersPage from "@/views/ManageUsersPage";
 import ProfilePage from "@/views/ProfilePage";
+import EditUserPage from "@/views/EditUserPage";
 
 
 export default new Router({
@@ -127,6 +128,12 @@ export default new Router({
                     name: "userProfilePage",
                     component: ProfilePage,
                     meta: {authenticated:true},
+                },
+                {
+                    path: "/user/:id",
+                    name: "viewUserProfilePage",
+                    component: ProfilePage,
+                    meta: {admin:true}
                 }
             ]
         }
