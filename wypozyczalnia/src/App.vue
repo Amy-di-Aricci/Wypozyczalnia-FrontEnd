@@ -14,13 +14,14 @@ export default {
   data() {
     return {
       drawer: true,
-      //mainPath: 'http://localhost:5000'
     }
   },
   methods:{
     redirect(){
       if (!localStorage.getItem('accessToken')) {
-        this.$router.replace({path: "/login"});
+        localStorage.clear();
+        delete axios.defaults.headers.common["Authorization"];
+        this.$router.replace('/login');
       }/*
       else if (localStorage.getItem('accessToken')) {
         this.$router.replace('/');
@@ -29,7 +30,8 @@ export default {
   },
   mounted(){
     this.redirect();
-  }
+  },
+
 }
 
 

@@ -131,6 +131,10 @@
             }
         },
         mounted(){
+            const token = localStorage.getItem('accessToken');
+            if (token) {
+                axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
+            }
             this.getItems();
             this.getUserReservations();
             const role = JSON.parse(localStorage.getItem('user')).role;

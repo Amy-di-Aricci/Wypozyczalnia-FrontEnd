@@ -9,7 +9,7 @@
         <v-toolbar-side-icon @click="drawer = !drawer"/>
         <v-toolbar-title>System wypożyczeń</v-toolbar-title>
         <v-spacer></v-spacer>
-        <AuthenticatedUserMenu/>
+        <AuthenticatedUserMenu v-bind:name="user.firstName +' '+user.lastName"/>
     </v-toolbar>
     <v-navigation-drawer
             dark
@@ -62,7 +62,13 @@
                 right: null,
                 drawer: true,
                 role: '',
-                user: null,
+                user: {
+                    userId: 0,
+                    firstName: "",
+                    lastName: "",
+                    username: "",
+                    role: ""
+                },
             }
         },
         mounted(){

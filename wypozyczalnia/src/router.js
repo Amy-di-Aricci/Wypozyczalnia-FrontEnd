@@ -13,6 +13,7 @@ import NotFoundPage from "@/views/NotFoundPage";
 import UserBorrowingsPage from "@/views/UserBorrowingsPage";
 import ManageBorrowingsPage from "@/views/ManageBorrowingsPage";
 import ManageUsersPage from "@/views/ManageUsersPage";
+import ProfilePage from "@/views/ProfilePage";
 
 
 export default new Router({
@@ -122,7 +123,16 @@ export default new Router({
                     meta: {admin: true},
                 },
                 {
-                    path: "/profile"
+                    path: "/profile",
+                    name: "userProfilePage",
+                    component: ProfilePage,
+                    meta: {authenticated:true},
+                },
+                {
+                    path: "/user/:id",
+                    name: "viewUserProfilePage",
+                    component: ProfilePage,
+                    meta: {admin:true}
                 }
             ]
         }

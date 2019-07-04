@@ -2,24 +2,29 @@
     <v-container fluid fill>
         <v-toolbar flat class="transparent">
             <v-toolbar-title class="display-1">Wypożyczenia przedmiotu {{item.name}}</v-toolbar-title>
+            <v-spacer/>
+            <v-btn v-if="item.isAvailable" @click="borrowItemDialog" outline color="info">Wypożycz</v-btn>
+            <v-btn v-if="!item.isAvailable" outline disabled>Niedostępny</v-btn>
         </v-toolbar>
         <template v-if="readyToRender" v-model="borrowings" v-for="(hire, index) in borrowings">
-            <v-card v-if="hire.returnDateTime===null" :key="index">
-                <v-card-title class="title">{{hire.user.firstName}} {{hire.user.lastName}}</v-card-title>
-                <v-divider/>
-                <v-card-text>
-                    <div><p class="subheading"><b>Data wypożyczenia:</b> {{hire.hireDateTime | moment('DD-MM-YYYY')}}</p></div>
-                </v-card-text>
-                <v-divider/>
-                <v-card-actions>
-                    <v-layout row-wrap>
-                        <v-btn outline color="info" class="margin5" @click="$router.push('/borrowings/user/'+hire.user.userId)">Wypożyczenia użytkownika</v-btn>
-                        <v-spacer/>
-                        <v-btn outline color="success" class="margin5" @click="endBorrowing(hire.hireId)">Oddaj</v-btn>
-                    </v-layout>
-                </v-card-actions>
-            </v-card>
-            <br/>
+            <div v-if="hire.returnDateTime===null">
+                <v-card :key="index">
+                    <v-card-title class="title">{{hire.user.firstName}} {{hire.user.lastName}}</v-card-title>
+                    <v-divider/>
+                    <v-card-text>
+                        <div><p class="subheading"><b>Data wypożyczenia:</b> {{hire.hireDateTime | moment('DD-MM-YYYY')}}</p></div>
+                    </v-card-text>
+                    <v-divider/>
+                    <v-card-actions>
+                        <v-layout row-wrap>
+                            <v-btn outline color="info" class="margin5" @click="$router.push('/borrowings/user/'+hire.user.userId)">Wypożyczenia użytkownika</v-btn>
+                            <v-spacer/>
+                            <v-btn outline color="success" class="margin5" @click="endBorrowing(hire.hireId)">Oddaj</v-btn>
+                        </v-layout>
+                    </v-card-actions>
+                </v-card>
+                <br/>
+            </div>
         </template>
         <v-toolbar flat class="transparent">
             <v-toolbar-title class="display-1">Rezerwacje</v-toolbar-title>
@@ -43,6 +48,17 @@
             </v-card>
             <br/>
         </template>
+        <v-dialog v-model="borrowDialog" width="500">
+            <v-card>
+                <v-card-title>Wybierz użytkownika</v-card-title>
+                <v-card-text>
+                    <v-select label="Użytkownik" v-model="selectedUser" :items="userlist" item-text="name" item-value="value"></v-select>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn @click="borrowItem" flat color="success">Wypożycz</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -58,6 +74,11 @@
                 response: "",
                 itemId: 0,
                 readyToRender: false,
+                borrowDialog: false,
+                users: null,
+                userlist: null,
+                selectedUser: null,
+                confirmed: false,
             }
         },
         methods:{
@@ -80,6 +101,36 @@
                 try{
                     this.response = await axios.get('/items/'+this.itemId);
                     this.item = this.response.data;
+                }
+                catch (e) {
+
+                }
+            },
+            async borrowItemDialog(){
+                await this.getUsers();
+                this.userlist = this.users.map(function (user) {
+                    return {"name":user.firstName+' '+user.lastName, "value":user.userId};
+                });
+                this.borrowDialog=true;
+            },
+            async borrowItem(){
+                try{
+                    this.response = await axios.post('/hires', {"ItemId":this.item.itemId, "UserId": this.selectedUser});
+                    if(this.response.status === 200)
+                        this.getBorrowings();
+                        this.getReservations();
+                        this.borrowDialog = false;
+                }
+                catch (e) {
+
+                }
+            },
+            async getUsers(){
+                try{
+                    this.response = await axios.get('/users');
+                    if(this.response.status === 200){
+                        this.users = this.response.data;
+                    }
                 }
                 catch (e) {
 
@@ -134,7 +185,8 @@
                     this.getReservations();
                     this.getBorrowings();
                 }
-            }
+            },
+
         },
         mounted(){
             this.getBorrowings();

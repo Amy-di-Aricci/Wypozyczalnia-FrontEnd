@@ -22,8 +22,12 @@
                     <div v-if="error" class="error--text subheading">Błąd logowania. Spróbuj ponownie.</div>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="success" @click="login">Zaloguj</v-btn>
+                    <div>
+                        <v-btn color="success" @click="login">Zaloguj</v-btn>
+                    </div>
                 </v-card-actions>
+                <br/>
+                <div align="center">Nie posiadasz konta? <v-btn outline small color="success" @click="$router.push('/register')">Zarejestruj się</v-btn></div>
             </v-card>
         </div>
         </v-layout>
