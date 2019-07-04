@@ -62,8 +62,9 @@
             async register(){
                 try{this.response = await axios.post('/users', {"Username":this.input.username, "Password":this.input.password, "FirstName":this.input.firstName, "LastName":this.input.lastName});
                     if(this.response.status === 200){
-                        this.login();
+                        await this.login();
                         this.error=false;
+                        this.$router.replace('/');
                     }
                     else if(this.response.status === 400){
                     }
@@ -80,8 +81,6 @@
                         localStorage.setItem('accessToken', this.response.data.token);
                         localStorage.setItem('user', JSON.stringify(this.response.data));
                         this.isLoggedIn=true;
-                        this.error=false;
-                        this.$router.replace('/');
                     }} catch (e) {
                 }
             }
