@@ -15,6 +15,7 @@ axios.defaults.proxy = {
   host: 'http://localhost',
   port: 5000,
 };
+axios.defaults.baseURL = 'http://localhost:5000';
 
 const token = localStorage.getItem('accessToken');
 if (token) {
@@ -33,6 +34,7 @@ Vue.use(axios);
 
 new Vue({
   el: '#app',
+  token,
   router,
   render: h => h(App),
 }).$mount('#app')
