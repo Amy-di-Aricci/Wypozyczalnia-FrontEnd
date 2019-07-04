@@ -5,23 +5,25 @@
             <v-toolbar-title v-if="user === null" class="display-1">Moje wypożyczenia</v-toolbar-title>
         </v-toolbar>
         <template v-if="readyToRender" v-model="borrowings" v-for="(hire, index) in borrowings">
-            <v-card v-if="hire.returnDateTime===null" :key="index">
-                <v-card-title class="title">{{hire.item.name}}</v-card-title>
-                <v-divider/>
-                <v-card-text>
-                    <div class="subheading">Data wypożyczenia: </div>
-                    {{hire.hireDateTime | moment('DD-MM-YYYY')}}
-                </v-card-text>
-                <v-divider/>
-                <v-card-actions>
-                    <v-layout row-wrap>
-                        <v-btn outline color="info" class="margin5" @click="$router.push('/item/'+hire.item.itemId)">Szczegóły</v-btn>
-                        <v-spacer/>
-                        <v-btn outline v-if="hasAdminRights" color="success" class="margin5" @click="endBorrowing(hire.hireId)">Oddaj</v-btn>
-                    </v-layout>
-                </v-card-actions>
-            </v-card>
-            <br/>
+            <div v-if="hire.returnDateTime===null">
+                <v-card :key="index">
+                    <v-card-title class="title">{{hire.item.name}}</v-card-title>
+                    <v-divider/>
+                    <v-card-text>
+                        <div class="subheading">Data wypożyczenia: </div>
+                        {{hire.hireDateTime | moment('DD-MM-YYYY')}}
+                    </v-card-text>
+                    <v-divider/>
+                    <v-card-actions>
+                        <v-layout row-wrap>
+                            <v-btn outline color="info" class="margin5" @click="$router.push('/item/'+hire.item.itemId)">Szczegóły</v-btn>
+                            <v-spacer/>
+                            <v-btn outline v-if="hasAdminRights" color="success" class="margin5" @click="endBorrowing(hire.hireId)">Oddaj</v-btn>
+                        </v-layout>
+                    </v-card-actions>
+                </v-card>
+                <br/>
+            </div>
         </template>
     </v-container>
 </template>
