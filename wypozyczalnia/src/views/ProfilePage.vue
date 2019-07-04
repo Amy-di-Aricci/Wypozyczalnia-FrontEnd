@@ -54,6 +54,7 @@
             </div>
             <v-spacer v-if="hasAdminRights"/>
             <v-btn v-if="ownProfile" @click="dialogPassword = true" outline color="warning">Zmień hasło</v-btn>
+            <v-btn v-if="hasAdminRights" @click="deleteConfirm = true" outline color="error">Usuń użytkownika</v-btn>
         </v-toolbar>
         <v-dialog persistent v-model="dialogNames" max-width="500" style="align-content: center">
             <v-card style="max-width: 500px;">
@@ -112,6 +113,15 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="deleteConfirm" max-width="500" style="align-content: center">
+            <v-card style="max-width: 500px;">
+                <v-card-title class="title">Czy na pewno chcesz usunąć użytkownika?</v-card-title>
+                <v-card-actions>
+                    <v-btn color="error" outline @click="deleteUser">Tak</v-btn>
+                    <v-btn outline @click="dialogRole=false">Nie</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -151,17 +161,16 @@
                 passResponse: false,
                 passErr: false,
                 roleErr: false,
+                deleteConfirm: false,
             }
         },
         methods: {
             async getUser(){
                 if(this.$route.params.id != null) {
                     this.userId = this.$route.params.id;
-                    this.ownProfile = false;
                 }
                 else
                 {
-                    this.ownProfile = true;
                     this.userId = JSON.parse(localStorage.getItem('user')).userId;
                 }
                 try {
@@ -174,6 +183,9 @@
                 catch (e) {
 
                 }
+                if(this.user.userId === JSON.parse(localStorage.getItem('user')).userId)
+                    this.ownProfile = true;
+                else this.ownProfile = false;
                 this.firstName = this.user.firstName;
                 this.lastName = this.user.lastName;
                 this.roleChoice = this.user.role;
@@ -227,6 +239,17 @@
                 }
                 catch (e) {
                     this.roleErr = true;
+                }
+            },
+            async deleteUser(){
+                try{
+                    this.response = await axios.delete('/users/'+this.user.userId);
+                    if(this.response.status=== 200){
+                        this.$router.push('/users/all');
+                    }
+                }
+                catch (e) {
+
                 }
             }
         },

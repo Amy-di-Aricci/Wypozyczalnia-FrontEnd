@@ -14,7 +14,6 @@ import UserBorrowingsPage from "@/views/UserBorrowingsPage";
 import ManageBorrowingsPage from "@/views/ManageBorrowingsPage";
 import ManageUsersPage from "@/views/ManageUsersPage";
 import ProfilePage from "@/views/ProfilePage";
-import EditUserPage from "@/views/EditUserPage";
 
 
 export default new Router({
