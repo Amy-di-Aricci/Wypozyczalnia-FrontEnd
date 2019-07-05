@@ -77,11 +77,9 @@
                     }
                 }
                 catch (e) {
-                    console.log(e.response.data);
                     if(e.response.data.Username[0] === "User already exists")
                         this.repeated = true;
                     else this.error=true;
-                    console.log('powtorka');
                 }
             },
             async login(){

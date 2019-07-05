@@ -76,10 +76,8 @@
                         localStorage.setItem('data', JSON.stringify(this.items));
                         this.readyToRender = true
                     }
-                    console.log(this.response.status)
                 }
                 catch (e) {
-                    console.log(e)
                 }
             },
             async deleteItem(Id){

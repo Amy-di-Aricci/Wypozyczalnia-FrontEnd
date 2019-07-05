@@ -54,15 +54,10 @@
                     if(this.response.status === 200){
                         this.item = this.response.data;
                         localStorage.setItem('data', JSON.stringify(this.item));
-                        console.log('Pobrano item');
                         this.readyToRender = true
                     }
-                    console.log(this.response.status)
                 }
-                catch (e) {
-                    console.log('Blad pobierania itemu');
-                    console.log(e)
-                }
+                catch (e){}
             },
             async deleteItem(){
                 const answer = window.confirm('Czy na pewno chcesz usunąć tę pozycję?');
@@ -73,19 +68,16 @@
                     this.$router.replace('/');
                     //this.readyToRender=true;
                 }
-                catch (e) {
-                    console.log('Blad usuwania');
-                }
+                catch (e){}
             },
             async updateItem(){
                 try{
                     this.response = await axios.put('/items/'+this.id, {"Name":this.item.name, "Signature":this.item.signature, "Description":this.item.description});
                     if(this.response.status === 200)
                     {
-                        console.log('Zapisano item');
                         localStorage.removeItem('data');
                         this.saved = true;
-                        this.$router.replace('/items/'+this.item.itemId);
+                        this.$router.replace('/items/'+this.itemId);
                     }
                 }
                 catch (e) {
@@ -98,7 +90,6 @@
             const user = JSON.parse(localStorage.getItem('user'));
             if(user.role === "ADMIN"){
                 this.hasAdminRights=true;
-                console.log("jestem adminem")
             }
         },
         beforeRouteLeave (to, from, next) {
